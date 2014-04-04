@@ -1,16 +1,9 @@
-import 'dart:html';
+import 'package:js/js.dart' as js;
 
 void main() {
-  querySelector("#sample_text_id")
-      ..text = "Click me!"
-      ..onClick.listen(reverseText);
-}
+  var s = js.context.Snap(800, 600);
+      var cellWidth = 100;
+      var cellHeight = 100;
 
-void reverseText(MouseEvent event) {
-  var text = querySelector("#sample_text_id").text;
-  var buffer = new StringBuffer();
-  for (int i = text.length - 1; i >= 0; i--) {
-    buffer.write(text[i]);
-  }
-  querySelector("#sample_text_id").text = buffer.toString();
+      s.rect(0, 0, cellWidth, cellHeight);
 }

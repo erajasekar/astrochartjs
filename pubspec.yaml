@@ -2,3 +2,4 @@ name: astrochartjs
 description: A sample web application
 dependencies:
   browser: any
+  js: any
