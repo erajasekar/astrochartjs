@@ -8,12 +8,15 @@ Created by Rajasekar Elango on 4/3/14.
 
   draw : (data, options) =>
     svg = Snap(elementId)
+    Point startPosition = new Point(0,0);
+
     chartSize = new Dimension(options.width,options.height);
+    drawTitle(svg, startPosition, chartSize, options.title);
+
     houseSpacingWidth = CONSTANTS.get('HOUSE_SPACING_WIDTH');
     houseSpacingHeight = CONSTANTS.get('HOUSE_SPACING_HEIGHT');
+    houseSize = computeHouseSize(chartSize, houseSpacingWidth, houseSpacingHeight);
 
-    houseSize = new Dimension(((chartSize.width - (3 * houseSpacingWidth))/4), ((chartSize.height - (3 * houseSpacingHeight))/4))
-    Point startPosition = new Point(0,0);
     for houseNo in [1,2,3,4,5,6,7,8,9,10,11,12]
       Cell houseCell = getCellForHouse(houseNo)
       Point housePosition = startPosition.move((houseCell.row * (houseSize.width + houseSpacingWidth)), (houseCell.col * (houseSize.height + houseSpacingHeight)));
@@ -122,16 +125,29 @@ drawHouse = (svg, housePosition, houseSize, data) ->
   items = getItems(data)
   if items?
     for item in items
-       point = findLocation(cellPosition, houseSize, item.cell)
+       point = computeCellLocation(cellPosition, houseSize, item.cell)
        svg.text(point.x, point.y, item.text)
   return;
 
-findLocation = (cellPosition,houseSize,cell) ->
-  gridWidth = houseSize.width / CONSTANTS.get('CELL_TOTAL_ROWS')
-  gridHeight = houseSize.height / CONSTANTS.get('CELL_TOTAL_COLS')
-  point = cellPosition.move( (cell.row * gridWidth) , (cell.col * gridHeight) );
+drawTitle = (svg, chartPosition, chartSize, title) ->
+  Point titlePosition = computeTitleLocation(chartPosition, chartSize);
+  for line, i in title
+    svg.text(titlePosition.x, titlePosition.y + (20 * i), line)
+
+
+computeCellLocation = (cellPosition,houseSize,cell) ->
+  cellWidth = houseSize.width / CONSTANTS.get('CELL_TOTAL_ROWS')
+  cellHeight = houseSize.height / CONSTANTS.get('CELL_TOTAL_COLS')
+  point = cellPosition.move( (cell.row * cellWidth) , (cell.col * cellHeight) );
   log(point)
   point
+
+computeTitleLocation = (chartPosition, chartSize) ->
+  offset = chartSize.scale(0.45, 0.5)
+  chartPosition.move(offset.width, offset.height)
+
+computeHouseSize = (chartSize, houseSpacingWidth, houseSpacingHeight)->
+  new Dimension(((chartSize.width - (3 * houseSpacingWidth))/4), ((chartSize.height - (3 * houseSpacingHeight))/4))
 
 log = (msg) ->
   CONSTANTS.get('DEBUG') and console.log(msg)

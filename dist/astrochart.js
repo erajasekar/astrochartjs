@@ -5,7 +5,7 @@ Created by Rajasekar Elango on 4/3/14.
  */
 
 (function() {
-  var CONSTANTS, Cell, Dimension, Item, Point, drawHouse, findLocation, getCellForHouse, getItems, log;
+  var CONSTANTS, Cell, Dimension, Item, Point, computeCellLocation, computeHouseSize, computeTitleLocation, drawHouse, drawTitle, getCellForHouse, getItems, log;
 
   this.AstroChart = function(elementId) {
     this.elementId = elementId;
@@ -14,11 +14,12 @@ Created by Rajasekar Elango on 4/3/14.
         return function(data, options) {
           var chartSize, houseCell, houseNo, housePosition, houseSize, houseSpacingHeight, houseSpacingWidth, startPosition, svg, _i, _len, _ref, _results;
           svg = Snap(elementId);
+          Point(startPosition = new Point(0, 0));
           chartSize = new Dimension(options.width, options.height);
+          drawTitle(svg, startPosition, chartSize, options.title);
           houseSpacingWidth = CONSTANTS.get('HOUSE_SPACING_WIDTH');
           houseSpacingHeight = CONSTANTS.get('HOUSE_SPACING_HEIGHT');
-          houseSize = new Dimension((chartSize.width - (3 * houseSpacingWidth)) / 4, (chartSize.height - (3 * houseSpacingHeight)) / 4);
-          Point(startPosition = new Point(0, 0));
+          houseSize = computeHouseSize(chartSize, houseSpacingWidth, houseSpacingHeight);
           _ref = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -112,19 +113,40 @@ Created by Rajasekar Elango on 4/3/14.
     if (items != null) {
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
-        point = findLocation(cellPosition, houseSize, item.cell);
+        point = computeCellLocation(cellPosition, houseSize, item.cell);
         svg.text(point.x, point.y, item.text);
       }
     }
   };
 
-  findLocation = function(cellPosition, houseSize, cell) {
-    var gridHeight, gridWidth, point;
-    gridWidth = houseSize.width / CONSTANTS.get('CELL_TOTAL_ROWS');
-    gridHeight = houseSize.height / CONSTANTS.get('CELL_TOTAL_COLS');
-    point = cellPosition.move(cell.row * gridWidth, cell.col * gridHeight);
+  drawTitle = function(svg, chartPosition, chartSize, title) {
+    var i, line, titlePosition, _i, _len, _results;
+    Point(titlePosition = computeTitleLocation(chartPosition, chartSize));
+    _results = [];
+    for (i = _i = 0, _len = title.length; _i < _len; i = ++_i) {
+      line = title[i];
+      _results.push(svg.text(titlePosition.x, titlePosition.y + (20 * i), line));
+    }
+    return _results;
+  };
+
+  computeCellLocation = function(cellPosition, houseSize, cell) {
+    var cellHeight, cellWidth, point;
+    cellWidth = houseSize.width / CONSTANTS.get('CELL_TOTAL_ROWS');
+    cellHeight = houseSize.height / CONSTANTS.get('CELL_TOTAL_COLS');
+    point = cellPosition.move(cell.row * cellWidth, cell.col * cellHeight);
     log(point);
     return point;
+  };
+
+  computeTitleLocation = function(chartPosition, chartSize) {
+    var offset;
+    offset = chartSize.scale(0.45, 0.5);
+    return chartPosition.move(offset.width, offset.height);
+  };
+
+  computeHouseSize = function(chartSize, houseSpacingWidth, houseSpacingHeight) {
+    return new Dimension((chartSize.width - (3 * houseSpacingWidth)) / 4, (chartSize.height - (3 * houseSpacingHeight)) / 4);
   };
 
   log = function(msg) {
