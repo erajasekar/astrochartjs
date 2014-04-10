@@ -18,7 +18,8 @@
 
         var astroChart = new AstroChart("#chart");
      //   var astroChart2 = new AstroChart("#chart2");
-        astroChart.draw([{0:["Su"]}, {1:["Su", "Mo"]}], options);
+     //   astroChart.draw([{1:["Su"]}, {2:["Su", "Mo"]}, {6:["Su", "Mo", "Ve"]}, {12:["Su", "Mo", "Ve", "Sa"]}], options);
+        astroChart.draw({1:["Su"], 2:["Su", "Mo"], 12:["Su", "Mo", "Ve", "Sa"]}, options);
        // astroChart2.draw(["Su", "Mo"], options);
      </script>
 </body>

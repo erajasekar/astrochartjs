@@ -4,37 +4,30 @@
 Created by Rajasekar Elango on 4/3/14.
  */
 
-
-/*@AstroChart = (element) ->
-  element
- */
-
 (function() {
-  var Cell, Dimension, Item, Point, drawHouse, findLocation, getItems;
+  var CONSTANTS, Cell, Dimension, Item, Point, drawHouse, findLocation, getCellForHouse, getItems, log;
 
   this.AstroChart = function(elementId) {
     this.elementId = elementId;
     return {
       draw: (function(_this) {
         return function(data, options) {
-          var houseData, houseNo, housePosition, houseSize, startPosition, svg, _i, _len, _results;
+          var houseCell, houseNo, housePosition, houseSize, houseSpacingHeight, houseSpacingWidth, startPosition, svg, _i, _len, _ref, _results;
           svg = Snap(elementId);
           houseSize = new Dimension(options.width, options.height);
           Point(startPosition = new Point(0, 0));
+          _ref = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
           _results = [];
-          for (_i = 0, _len = data.length; _i < _len; _i++) {
-            houseData = data[_i];
-            _results.push((function() {
-              var _results1;
-              _results1 = [];
-              for (houseNo in houseData) {
-                Point(housePosition = startPosition.move((+houseNo + 1) * houseSize.width, startPosition.y));
-                console.log(houseData[houseNo]);
-                console.log(housePosition);
-                _results1.push(drawHouse(svg, housePosition, houseSize, houseData[houseNo]));
-              }
-              return _results1;
-            })());
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            houseNo = _ref[_i];
+            houseSpacingWidth = CONSTANTS.get('HOUSE_SPACING_WIDTH');
+            houseSpacingHeight = CONSTANTS.get('HOUSE_SPACING_HEIGHT');
+            Cell(houseCell = getCellForHouse(houseNo));
+            Point(housePosition = startPosition.move(houseCell.row * (houseSize.width + houseSpacingWidth), houseCell.col * (houseSize.height + houseSpacingHeight)));
+            log("--------");
+            log(startPosition);
+            log(housePosition);
+            _results.push(drawHouse(svg, housePosition, houseSize, data[houseNo]));
           }
           return _results;
         };
@@ -42,9 +35,40 @@ Created by Rajasekar Elango on 4/3/14.
     };
   };
 
+  getCellForHouse = function(houseNo) {
+    switch (houseNo) {
+      case 1:
+        return new Cell(1, 0);
+      case 2:
+        return new Cell(2, 0);
+      case 3:
+        return new Cell(3, 0);
+      case 4:
+        return new Cell(3, 1);
+      case 5:
+        return new Cell(3, 2);
+      case 6:
+        return new Cell(3, 3);
+      case 7:
+        return new Cell(2, 3);
+      case 8:
+        return new Cell(1, 3);
+      case 9:
+        return new Cell(0, 3);
+      case 10:
+        return new Cell(0, 2);
+      case 11:
+        return new Cell(0, 1);
+      case 12:
+        return new Cell(0, 0);
+      default:
+        throw "houseNo should be between 1 and 12";
+    }
+  };
+
   getItems = function(data) {
     var items;
-    switch (data.length) {
+    switch ((data != null ? data.length : void 0)) {
       case 1:
         items = [new Item(data[0], new Cell(1, 1))];
         break;
@@ -76,28 +100,34 @@ Created by Rajasekar Elango on 4/3/14.
   };
 
   drawHouse = function(svg, housePosition, houseSize, data) {
-    var cellPosition, item, point, scaledSize, _i, _len, _ref;
+    var cellPosition, item, items, point, scaledSize, _i, _len;
     svg.rect(housePosition.x, housePosition.y, houseSize.width, houseSize.height).attr({
       fill: "white",
       stroke: "black"
     });
-    Dimension(scaledSize = houseSize.scale(0.05, 0.2));
+    Dimension(scaledSize = houseSize.scale(CONSTANTS.get('CELL_WIDTH_OFFSET_PERCENT'), CONSTANTS.get('CELL_HEIGHT_OFFSET_PERCENT')));
     Point(cellPosition = housePosition.move(scaledSize.width, scaledSize.height));
-    _ref = getItems(data);
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      item = _ref[_i];
-      point = findLocation(cellPosition, houseSize, item.cell);
-      svg.text(point.x, point.y, item.text);
+    items = getItems(data);
+    if (items != null) {
+      for (_i = 0, _len = items.length; _i < _len; _i++) {
+        item = items[_i];
+        point = findLocation(cellPosition, houseSize, item.cell);
+        svg.text(point.x, point.y, item.text);
+      }
     }
   };
 
   findLocation = function(cellPosition, houseSize, cell) {
     var gridHeight, gridWidth, point;
-    gridWidth = houseSize.width / 3;
-    gridHeight = houseSize.height / 3;
+    gridWidth = houseSize.width / CONSTANTS.get('CELL_TOTAL_ROWS');
+    gridHeight = houseSize.height / CONSTANTS.get('CELL_TOTAL_COLS');
     point = cellPosition.move(cell.row * gridWidth, cell.col * gridHeight);
-    console.log(point);
+    log(point);
     return point;
+  };
+
+  log = function(msg) {
+    return CONSTANTS.get('DEBUG') && console.log(msg);
   };
 
   Cell = (function() {
@@ -108,6 +138,24 @@ Created by Rajasekar Elango on 4/3/14.
 
     return Cell;
 
+  })();
+
+  CONSTANTS = (function() {
+    var private_;
+    private_ = {
+      DEBUG: false,
+      HOUSE_SPACING_WIDTH: 5,
+      HOUSE_SPACING_HEIGHT: 5,
+      CELL_WIDTH_OFFSET_PERCENT: 0.05,
+      CELL_HEIGHT_OFFSET_PERCENT: 0.25,
+      CELL_TOTAL_ROWS: 3,
+      CELL_TOTAL_COLS: 3
+    };
+    return {
+      get: function(name) {
+        return private_[name];
+      }
+    };
   })();
 
   Dimension = (function() {
