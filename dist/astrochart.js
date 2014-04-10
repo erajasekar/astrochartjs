@@ -16,6 +16,10 @@ Created by Rajasekar Elango on 4/3/14.
           svg = Snap(elementId);
           Point(startPosition = new Point(0, 0));
           chartSize = new Dimension(options.width, options.height);
+          svg.rect(startPosition.x, startPosition.y, chartSize.width, chartSize.height).attr({
+            fill: '#F3EFE3',
+            stroke: '#FF7E00'
+          });
           drawTitle(svg, startPosition, chartSize, options.title);
           houseSpacingWidth = CONSTANTS.get('HOUSE_SPACING_WIDTH');
           houseSpacingHeight = CONSTANTS.get('HOUSE_SPACING_HEIGHT');
@@ -104,8 +108,8 @@ Created by Rajasekar Elango on 4/3/14.
   drawHouse = function(svg, housePosition, houseSize, data) {
     var cellPosition, item, items, point, scaledSize, _i, _len;
     svg.rect(housePosition.x, housePosition.y, houseSize.width, houseSize.height).attr({
-      fill: "white",
-      stroke: "black"
+      fill: '#F3EFE3',
+      stroke: '#FF7E00'
     });
     Dimension(scaledSize = houseSize.scale(CONSTANTS.get('CELL_WIDTH_OFFSET_PERCENT'), CONSTANTS.get('CELL_HEIGHT_OFFSET_PERCENT')));
     Point(cellPosition = housePosition.move(scaledSize.width, scaledSize.height));
