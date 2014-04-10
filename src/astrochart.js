@@ -16,7 +16,7 @@ function drawChart() {
 
     var x = 5;
     var y = 20;
-    var xspacing = cellWidth / 3;
+    var xspacing = cellWidth / 3 ;
     var yspacing = cellHeight / 3;
 
     for (var i = 0; i < planets.length; ++i) {
@@ -25,6 +25,7 @@ function drawChart() {
         var point = findLocation({x:x, y:y, width:cellWidth, height:cellHeight, gridPosition:i})
         s.text(point.x, point.y, planet);
     }
+
 }
 
 function findLocation(cell){

@@ -1,2 +1,2 @@
 class Cell
-  constructor: (@row, @col, @item) ->
+  constructor: (@row, @col) ->

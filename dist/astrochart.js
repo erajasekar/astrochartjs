@@ -4,91 +4,106 @@
 Created by Rajasekar Elango on 4/3/14.
  */
 
-(function() {
-  var Cell, Dimension, Point, drawHouse, findLocation, getCells;
 
-  this.AstroChart = function(element) {
-    return element;
+/*@AstroChart = (element) ->
+  element
+ */
+
+(function() {
+  var Cell, Dimension, Item, Point, drawHouse, findLocation, getItems;
+
+  this.AstroChart = function(elementId) {
+    this.elementId = elementId;
+    return {
+      draw: (function(_this) {
+        return function(data, options) {
+          var houseData, houseNo, housePosition, houseSize, startPosition, svg, _i, _len, _results;
+          svg = Snap(elementId);
+          houseSize = new Dimension(options.width, options.height);
+          Point(startPosition = new Point(0, 0));
+          _results = [];
+          for (_i = 0, _len = data.length; _i < _len; _i++) {
+            houseData = data[_i];
+            _results.push((function() {
+              var _results1;
+              _results1 = [];
+              for (houseNo in houseData) {
+                Point(housePosition = startPosition.move((+houseNo + 1) * houseSize.width, startPosition.y));
+                console.log(houseData[houseNo]);
+                console.log(housePosition);
+                _results1.push(drawHouse(svg, housePosition, houseSize, houseData[houseNo]));
+              }
+              return _results1;
+            })());
+          }
+          return _results;
+        };
+      })(this)
+    };
   };
 
-  AstroChart.drawChart = function() {
-    var houseSize, planets, svg;
-    svg = Snap(800, 600);
-    houseSize = new Dimension(100, 100);
-    svg.rect(0, 0, houseSize.width, houseSize.height).attr({
+  getItems = function(data) {
+    var items;
+    switch (data.length) {
+      case 1:
+        items = [new Item(data[0], new Cell(1, 1))];
+        break;
+      case 2:
+        items = [new Item(data[0], new Cell(0, 0)), new Item(data[1], new Cell(2, 2))];
+        break;
+      case 3:
+        items = [new Item(data[0], new Cell(0, 1)), new Item(data[1], new Cell(2, 0)), new Item(data[2], new Cell(2, 2))];
+        break;
+      case 4:
+        items = [new Item(data[0], new Cell(0, 0)), new Item(data[1], new Cell(0, 2)), new Item(data[2], new Cell(2, 0)), new Item(data[3], new Cell(2, 2))];
+        break;
+      case 5:
+        items = [new Item(data[0], new Cell(0, 0)), new Item(data[1], new Cell(0, 2)), new Item(data[2], new Cell(2, 0)), new Item(data[3], new Cell(2, 2)), new Item(data[4], new Cell(1, 1))];
+        break;
+      case 6:
+        items = [new Item(data[0], new Cell(0, 0)), new Item(data[1], new Cell(0, 1)), new Item(data[2], new Cell(0, 2)), new Item(data[3], new Cell(2, 0)), new Item(data[4], new Cell(2, 1)), new Item(data[5], new Cell(2, 2))];
+        break;
+      case 7:
+        items = [new Item(data[0], new Cell(0, 0)), new Item(data[1], new Cell(0, 1)), new Item(data[2], new Cell(0, 2)), new Item(data[3], new Cell(2, 0)), new Item(data[4], new Cell(2, 1)), new Item(data[5], new Cell(2, 2)), new Item(data[6], new Cell(1, 1))];
+        break;
+      case 8:
+        items = [new Item(data[0], new Cell(0, 0)), new Item(data[1], new Cell(0, 1)), new Item(data[2], new Cell(0, 2)), new Item(data[3], new Cell(2, 0)), new Item(data[4], new Cell(2, 1)), new Item(data[5], new Cell(2, 2)), new Item(data[6], new Cell(1, 0)), new Item(data[7], new Cell(1, 2))];
+        break;
+      case 9:
+        items = [new Item(data[0], new Cell(0, 0)), new Item(data[1], new Cell(0, 1)), new Item(data[2], new Cell(0, 2)), new Item(data[3], new Cell(1, 0)), new Item(data[4], new Cell(1, 1)), new Item(data[5], new Cell(1, 2)), new Item(data[6], new Cell(2, 0)), new Item(data[7], new Cell(2, 1)), new Item(data[8], new Cell(2, 2))];
+    }
+    return items;
+  };
+
+  drawHouse = function(svg, housePosition, houseSize, data) {
+    var cellPosition, item, point, scaledSize, _i, _len, _ref;
+    svg.rect(housePosition.x, housePosition.y, houseSize.width, houseSize.height).attr({
       fill: "white",
       stroke: "black"
     });
-
-    /*planets = [
-      "Su"
-      "Mo"
-      "Ma"
-      "Me"
-      "Ju"
-      "Ve"
-      "Sa"
-      "Ra"
-      "Ke"
-    ]
-     */
-    planets = ["Mo"];
-    drawHouse(svg, new Point(5, 20), houseSize, planets);
-
-    /* x = 5
-    y = 20
-    xspacing = cellWidth / 3
-    yspacing = cellHeight / 3
-    i = 0
-    
-    while i < planets.length
-      planet = planets[i]
-      point = findLocation(
-        new Point(x,y),
-        new Dimension(cellWidth, cellHeight),
-        i
-      )
-      s.text point.x, point.y, planet
-      ++i
-     */
-  };
-
-  getCells = function(items) {
-    var cells;
-    switch (items.length) {
-      case 1:
-        cells = [new Cell(1, 1, items[0])];
-        break;
-      case 2:
-        cells = [new Cell(0, 0, items[0]), new Cell(2, 2, items[1])];
-    }
-    return cells;
-  };
-
-  drawHouse = function(svg, housePosition, houseSize, items) {
-    var cell, point, _i, _len, _ref;
-    _ref = getCells(items);
+    Dimension(scaledSize = houseSize.scale(0.05, 0.2));
+    Point(cellPosition = housePosition.move(scaledSize.width, scaledSize.height));
+    _ref = getItems(data);
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      cell = _ref[_i];
-      point = findLocation(housePosition, houseSize, cell);
-      svg.text(point.x, point.y, cell.item);
+      item = _ref[_i];
+      point = findLocation(cellPosition, houseSize, item.cell);
+      svg.text(point.x, point.y, item.text);
     }
   };
 
-  findLocation = function(housePosition, houseSize, cell) {
+  findLocation = function(cellPosition, houseSize, cell) {
     var gridHeight, gridWidth, point;
     gridWidth = houseSize.width / 3;
     gridHeight = houseSize.height / 3;
-    point = housePosition.move(cell.row * gridWidth, cell.col * gridHeight);
+    point = cellPosition.move(cell.row * gridWidth, cell.col * gridHeight);
     console.log(point);
     return point;
   };
 
   Cell = (function() {
-    function Cell(row, col, item) {
+    function Cell(row, col) {
       this.row = row;
       this.col = col;
-      this.item = item;
     }
 
     return Cell;
@@ -101,7 +116,21 @@ Created by Rajasekar Elango on 4/3/14.
       this.height = height;
     }
 
+    Dimension.prototype.scale = function(x, y) {
+      return new Dimension(this.width * x, this.height * y);
+    };
+
     return Dimension;
+
+  })();
+
+  Item = (function() {
+    function Item(text, cell) {
+      this.text = text;
+      this.cell = cell;
+    }
+
+    return Item;
 
   })();
 

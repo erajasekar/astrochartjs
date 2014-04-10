@@ -4,3 +4,5 @@ packages/
 *.iml
 *.orig
 build/
+*.log
+

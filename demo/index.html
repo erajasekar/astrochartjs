@@ -2,13 +2,24 @@
 <html>
 <head lang="en">
     <script src="../lib/snapsvg/snap.svg.js"></script>
-    <script src="../dist/astrochart.js"></script>
+
     <meta charset="UTF-8"/>
     <title>AstroChartJs Demo</title>
 </head>
 <body>
-     <script language="JavaScript">
-        AstroChart.drawChart()
+    <svg id="chart" ></svg>
+    <svg id="chart2" ></svg>
+    <script src="../dist/astrochart.js"></script>
+    <script language="JavaScript">
+
+        var options = {'title':'Rasi',
+            'width':100,
+            'height':100};
+
+        var astroChart = new AstroChart("#chart");
+     //   var astroChart2 = new AstroChart("#chart2");
+        astroChart.draw([{0:["Su"]}, {1:["Su", "Mo"]}], options);
+       // astroChart2.draw(["Su", "Mo"], options);
      </script>
 </body>
 </html>
