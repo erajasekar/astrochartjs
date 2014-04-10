@@ -12,16 +12,17 @@ Created by Rajasekar Elango on 4/3/14.
     return {
       draw: (function(_this) {
         return function(data, options) {
-          var houseCell, houseNo, housePosition, houseSize, houseSpacingHeight, houseSpacingWidth, startPosition, svg, _i, _len, _ref, _results;
+          var chartSize, houseCell, houseNo, housePosition, houseSize, houseSpacingHeight, houseSpacingWidth, startPosition, svg, _i, _len, _ref, _results;
           svg = Snap(elementId);
-          houseSize = new Dimension(options.width, options.height);
+          chartSize = new Dimension(options.width, options.height);
+          houseSpacingWidth = CONSTANTS.get('HOUSE_SPACING_WIDTH');
+          houseSpacingHeight = CONSTANTS.get('HOUSE_SPACING_HEIGHT');
+          houseSize = new Dimension((chartSize.width - (3 * houseSpacingWidth)) / 4, (chartSize.height - (3 * houseSpacingHeight)) / 4);
           Point(startPosition = new Point(0, 0));
           _ref = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             houseNo = _ref[_i];
-            houseSpacingWidth = CONSTANTS.get('HOUSE_SPACING_WIDTH');
-            houseSpacingHeight = CONSTANTS.get('HOUSE_SPACING_HEIGHT');
             Cell(houseCell = getCellForHouse(houseNo));
             Point(housePosition = startPosition.move(houseCell.row * (houseSize.width + houseSpacingWidth), houseCell.col * (houseSize.height + houseSpacingHeight)));
             log("--------");

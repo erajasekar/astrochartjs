@@ -8,11 +8,13 @@ Created by Rajasekar Elango on 4/3/14.
 
   draw : (data, options) =>
     svg = Snap(elementId)
-    houseSize = new Dimension(options.width,options.height);
+    chartSize = new Dimension(options.width,options.height);
+    houseSpacingWidth = CONSTANTS.get('HOUSE_SPACING_WIDTH');
+    houseSpacingHeight = CONSTANTS.get('HOUSE_SPACING_HEIGHT');
+
+    houseSize = new Dimension(((chartSize.width - (3 * houseSpacingWidth))/4), ((chartSize.height - (3 * houseSpacingHeight))/4))
     Point startPosition = new Point(0,0);
     for houseNo in [1,2,3,4,5,6,7,8,9,10,11,12]
-      houseSpacingWidth = CONSTANTS.get('HOUSE_SPACING_WIDTH');
-      houseSpacingHeight = CONSTANTS.get('HOUSE_SPACING_HEIGHT');
       Cell houseCell = getCellForHouse(houseNo)
       Point housePosition = startPosition.move((houseCell.row * (houseSize.width + houseSpacingWidth)), (houseCell.col * (houseSize.height + houseSpacingHeight)));
       log("--------")
