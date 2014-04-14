@@ -139,13 +139,17 @@ drawHouse = (svg, housePosition, houseSize, data) ->
   if items?
     for item in items
        point = computeCellLocation(cellPosition, houseSize, item.cell)
-       svg.text(point.x, point.y, item.text)
+       svg.text(point.x, point.y, item.text).attr(class:'house', id : formatId(item.text));
   return;
 
 drawTitle = (svg, chartPosition, chartSize, title) ->
   Point titlePosition = computeTitleLocation(chartPosition, chartSize);
-  for line, i in title
-    svg.text(titlePosition.x, titlePosition.y + (20 * i), line)
+  text = svg.text(titlePosition.x, titlePosition.y , title).attr(class:'title');
+  text.selectAll("tspan:nth-child(n+2)").attr({
+              dy: "1.2em",
+              x: titlePosition.x
+          });
+
 
 
 computeCellLocation = (cellPosition,houseSize,cell) ->
@@ -156,11 +160,14 @@ computeCellLocation = (cellPosition,houseSize,cell) ->
   point
 
 computeTitleLocation = (chartPosition, chartSize) ->
-  offset = chartSize.scale(0.45, 0.5)
+  offset = chartSize.scale(0.5, 0.5)
   chartPosition.move(offset.width, offset.height)
 
 computeHouseSize = (chartSize, houseSpacingWidth, houseSpacingHeight)->
   new Dimension(((chartSize.width - (3 * houseSpacingWidth))/4), ((chartSize.height - (3 * houseSpacingHeight))/4))
+
+formatId = (text) ->
+  text.replace(/\s+/g, "_")
 
 log = (msg) ->
   CONSTANTS.get('DEBUG') and console.log(msg)

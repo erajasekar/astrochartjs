@@ -5,7 +5,7 @@ Created by Rajasekar Elango on 4/3/14.
  */
 
 (function() {
-  var CONSTANTS, Cell, Dimension, Item, Point, addStyleSheet, computeCellLocation, computeHouseSize, computeTitleLocation, drawHouse, drawTitle, getCellForHouse, getItems, log;
+  var CONSTANTS, Cell, Dimension, Item, Point, addStyleSheet, computeCellLocation, computeHouseSize, computeTitleLocation, drawHouse, drawTitle, formatId, getCellForHouse, getItems, log;
 
   this.AstroChart = function(elementId) {
     this.elementId = elementId;
@@ -130,20 +130,24 @@ Created by Rajasekar Elango on 4/3/14.
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
         point = computeCellLocation(cellPosition, houseSize, item.cell);
-        svg.text(point.x, point.y, item.text);
+        svg.text(point.x, point.y, item.text).attr({
+          "class": 'house',
+          id: formatId(item.text)
+        });
       }
     }
   };
 
   drawTitle = function(svg, chartPosition, chartSize, title) {
-    var i, line, titlePosition, _i, _len, _results;
+    var text, titlePosition;
     Point(titlePosition = computeTitleLocation(chartPosition, chartSize));
-    _results = [];
-    for (i = _i = 0, _len = title.length; _i < _len; i = ++_i) {
-      line = title[i];
-      _results.push(svg.text(titlePosition.x, titlePosition.y + (20 * i), line));
-    }
-    return _results;
+    text = svg.text(titlePosition.x, titlePosition.y, title).attr({
+      "class": 'title'
+    });
+    return text.selectAll("tspan:nth-child(n+2)").attr({
+      dy: "1.2em",
+      x: titlePosition.x
+    });
   };
 
   computeCellLocation = function(cellPosition, houseSize, cell) {
@@ -157,12 +161,16 @@ Created by Rajasekar Elango on 4/3/14.
 
   computeTitleLocation = function(chartPosition, chartSize) {
     var offset;
-    offset = chartSize.scale(0.45, 0.5);
+    offset = chartSize.scale(0.5, 0.5);
     return chartPosition.move(offset.width, offset.height);
   };
 
   computeHouseSize = function(chartSize, houseSpacingWidth, houseSpacingHeight) {
     return new Dimension((chartSize.width - (3 * houseSpacingWidth)) / 4, (chartSize.height - (3 * houseSpacingHeight)) / 4);
+  };
+
+  formatId = function(text) {
+    return text.replace(/\s+/g, "_");
   };
 
   log = function(msg) {
