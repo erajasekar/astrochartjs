@@ -7,7 +7,22 @@
     <title>AstroChartJs Demo</title>
 </head>
 <body>
-    <svg id="chart" ></svg>
+    <svg id="chart" >
+        <style type="text/css" >
+            <![CDATA[
+
+        rect.house {
+                stroke: #FF7E00;
+                fill:   #F3EFE3;
+            }
+
+        rect.chart {
+            fill:  #F3EFE3;
+            stroke: #FF7E00;
+        }
+            ]]>
+        </style>
+    </svg>
     <svg id="chart2" ></svg>
     <script src="../dist/astrochart.js"></script>
     <script language="JavaScript">
@@ -20,6 +35,21 @@
      //   var astroChart2 = new AstroChart("#chart2");
         astroChart.draw({1:["Su"], 2:["Su", "Mo"], 12:["Su", "Mo", "Ve", "Sa"]}, options);
        // astroChart2.draw(["Su", "Mo"], options);
+
+        var svg = document.querySelector( "#chart" );
+        var svgData = new XMLSerializer().serializeToString( svg );
+
+        var canvas = document.createElement( "canvas" );
+        var ctx = canvas.getContext( "2d" );
+
+        var img = document.createElement( "img" );
+        img.setAttribute( "src", "data:image/svg+xml;base64," + btoa( svgData ) );
+        console.log(svgData);
+      //  img.onload = function() {
+            ctx.drawImage( img, 0, 0 );
+// Now is done
+            console.log( canvas.toDataURL( "image/png" ) );
+        //};
      </script>
 </body>
 </html>

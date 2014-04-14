@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="chart">
+	<desc>Created with Snap</desc>
+	<defs />
+	<rect x="0" y="0" width="600" height="400" />
+	<text x="270" y="200">Rasi</text>
+	<text x="270" y="220">11/04/2014 07:00AM</text>
+	<text x="270" y="240">Erode, Tamil Nadu, India</text>
+	<rect x="151.25" y="0" width="146.25" height="96.25" />
+	<text x="207.3125" y="56.145833333333336">Su</text>
+	<rect x="302.5" y="0" width="146.25" height="96.25" />
+	<text x="309.8125" y="24.0625">Su</text>
+	<text x="407.3125" y="88.22916666666667">Mo</text>
+	<rect x="453.75" y="0" width="146.25" height="96.25" />
+	<rect x="453.75" y="101.25" width="146.25" height="96.25" />
+	<rect x="453.75" y="202.5" width="146.25" height="96.25" />
+	<rect x="453.75" y="303.75" width="146.25" height="96.25" />
+	<rect x="302.5" y="303.75" width="146.25" height="96.25" />
+	<rect x="151.25" y="303.75" width="146.25" height="96.25" />
+	<rect x="0" y="303.75" width="146.25" height="96.25" />
+	<rect x="0" y="202.5" width="146.25" height="96.25" />
+	<rect x="0" y="101.25" width="146.25" height="96.25" />
+	<rect x="0" y="0" width="146.25" height="96.25" />
+	<text x="7.3125" y="24.0625">Su</text>
+	<text x="7.3125" y="88.22916666666667">Mo</text>
+	<text x="104.8125" y="24.0625">Ve</text>
+	<text x="104.8125" y="88.22916666666667">Sa</text>
+</svg>
