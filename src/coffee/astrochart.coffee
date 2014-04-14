@@ -8,11 +8,14 @@ Created by Rajasekar Elango on 4/3/14.
 
   draw : (data, options) =>
     svg = Snap(elementId)
+
+    addStyleSheet(elementId, options)
+
     Point startPosition = new Point(0,0);
 
     chartSize = new Dimension(options.width,options.height);
 
-    svg.rect(startPosition.x, startPosition.y, chartSize.width, chartSize.height).attr(class:'chart');;
+    svg.rect(startPosition.x, startPosition.y, chartSize.width, chartSize.height).attr(class:'chart');
 
     drawTitle(svg, startPosition, chartSize, options.title);
 
@@ -27,6 +30,15 @@ Created by Rajasekar Elango on 4/3/14.
       log(startPosition)
       log(housePosition)
       drawHouse(svg, housePosition , houseSize, data[houseNo])
+
+addStyleSheet = (elementId, options) =>
+  svgElement = document.querySelector( elementId );
+  styleElement = document.createElement( "style" );
+  styleElement.setAttribute("type", "text/css");
+  styleSheetUrl = if options.styleSheet then options.styleSheet else  CONSTANTS.get('DEFAULT_STYLE_SHEET')
+  styleData = document.createTextNode(" @import url(#{styleSheetUrl})");
+  styleElement.appendChild(styleData)
+  svgElement.appendChild(styleElement);
 
 getCellForHouse = (houseNo) ->
   switch (houseNo)

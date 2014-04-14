@@ -5,7 +5,7 @@ Created by Rajasekar Elango on 4/3/14.
  */
 
 (function() {
-  var CONSTANTS, Cell, Dimension, Item, Point, computeCellLocation, computeHouseSize, computeTitleLocation, drawHouse, drawTitle, getCellForHouse, getItems, log;
+  var CONSTANTS, Cell, Dimension, Item, Point, addStyleSheet, computeCellLocation, computeHouseSize, computeTitleLocation, drawHouse, drawTitle, getCellForHouse, getItems, log;
 
   this.AstroChart = function(elementId) {
     this.elementId = elementId;
@@ -14,6 +14,7 @@ Created by Rajasekar Elango on 4/3/14.
         return function(data, options) {
           var chartSize, houseCell, houseNo, housePosition, houseSize, houseSpacingHeight, houseSpacingWidth, startPosition, svg, _i, _len, _ref, _results;
           svg = Snap(elementId);
+          addStyleSheet(elementId, options);
           Point(startPosition = new Point(0, 0));
           chartSize = new Dimension(options.width, options.height);
           svg.rect(startPosition.x, startPosition.y, chartSize.width, chartSize.height).attr({
@@ -39,6 +40,19 @@ Created by Rajasekar Elango on 4/3/14.
       })(this)
     };
   };
+
+  addStyleSheet = (function(_this) {
+    return function(elementId, options) {
+      var styleData, styleElement, styleSheetUrl, svgElement;
+      svgElement = document.querySelector(elementId);
+      styleElement = document.createElement("style");
+      styleElement.setAttribute("type", "text/css");
+      styleSheetUrl = options.styleSheet ? options.styleSheet : CONSTANTS.get('DEFAULT_STYLE_SHEET');
+      styleData = document.createTextNode(" @import url(" + styleSheetUrl + ")");
+      styleElement.appendChild(styleData);
+      return svgElement.appendChild(styleElement);
+    };
+  })(this);
 
   getCellForHouse = function(houseNo) {
     switch (houseNo) {
@@ -174,7 +188,8 @@ Created by Rajasekar Elango on 4/3/14.
       CELL_WIDTH_OFFSET_PERCENT: 0.05,
       CELL_HEIGHT_OFFSET_PERCENT: 0.25,
       CELL_TOTAL_ROWS: 3,
-      CELL_TOTAL_COLS: 3
+      CELL_TOTAL_COLS: 3,
+      DEFAULT_STYLE_SHEET: "../dist/themes/default.css"
     };
     return {
       get: function(name) {
