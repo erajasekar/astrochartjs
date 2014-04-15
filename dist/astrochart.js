@@ -43,9 +43,10 @@ Created by Rajasekar Elango on 4/3/14.
 
   addStyleSheet = (function(_this) {
     return function(elementId, options) {
-      var styleData, styleElement, styleSheetUrl, svgElement;
+      var styleData, styleElement, styleSheetUrl, svgElement, _ref;
       svgElement = document.querySelector(elementId);
-      styleElement = document.createElement("style");
+      styleElement = (_ref = svgElement.getElementsByTagName("style")) != null ? _ref[0] : void 0;
+      styleElement = styleElement ? styleElement : document.createElement("style");
       styleElement.setAttribute("type", "text/css");
       styleSheetUrl = options.styleSheet ? options.styleSheet : CONSTANTS.get('DEFAULT_STYLE_SHEET');
       styleData = document.createTextNode(" @import url(" + styleSheetUrl + ")");

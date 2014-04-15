@@ -33,7 +33,8 @@ Created by Rajasekar Elango on 4/3/14.
 
 addStyleSheet = (elementId, options) =>
   svgElement = document.querySelector( elementId );
-  styleElement = document.createElement( "style" );
+  styleElement = svgElement.getElementsByTagName("style")?[0]
+  styleElement = if styleElement then styleElement else document.createElement( "style" );
   styleElement.setAttribute("type", "text/css");
   styleSheetUrl = if options.styleSheet then options.styleSheet else  CONSTANTS.get('DEFAULT_STYLE_SHEET')
   styleData = document.createTextNode(" @import url(#{styleSheetUrl})");
