@@ -120,7 +120,7 @@ Created by Rajasekar Elango on 4/3/14.
   };
 
   drawHouse = function(svg, housePosition, houseSize, data) {
-    var cellPosition, item, items, point, scaledSize, _i, _len;
+    var cellPosition, item, items, point, scaledSize, styleClass, _i, _len;
     svg.rect(housePosition.x, housePosition.y, houseSize.width, houseSize.height).attr({
       "class": 'house'
     });
@@ -131,8 +131,9 @@ Created by Rajasekar Elango on 4/3/14.
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
         point = computeCellLocation(cellPosition, houseSize, item.cell);
+        styleClass = /~R$/.test(item.text) ? 'house retrograde' : 'house';
         svg.text(point.x, point.y, item.text).attr({
-          "class": 'house',
+          "class": styleClass,
           id: formatId(item.text)
         });
       }

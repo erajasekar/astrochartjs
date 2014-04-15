@@ -140,7 +140,8 @@ drawHouse = (svg, housePosition, houseSize, data) ->
   if items?
     for item in items
        point = computeCellLocation(cellPosition, houseSize, item.cell)
-       svg.text(point.x, point.y, item.text).attr(class:'house', id : formatId(item.text));
+       styleClass = if /~R$/.test(item.text) then 'house retrograde' else 'house'
+       svg.text(point.x, point.y, item.text).attr(class:styleClass, id : formatId(item.text));
   return;
 
 drawTitle = (svg, chartPosition, chartSize, title) ->

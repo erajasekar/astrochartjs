@@ -8,19 +8,20 @@
     <title>AstroChartJs Demo</title>
 
 </head>
-<body>
+<body style="background-color: #F3EFE3">
     <svg id="chart" />
     <svg id="chart2" ></svg>
     <script src="../dist/astrochart.js"></script>
     <script language="JavaScript">
 
         var options = {'title':['Rasi' , '11/04/2014 07:00AM' ,'Erode, Tamil Nadu, India'],
+            'styleSheet' : '../dist/themes/blog.css',
             'width':600,
             'height':400};
 
         var astroChart = new AstroChart("#chart");
      //   var astroChart2 = new AstroChart("#chart2");
-        astroChart.draw({1:["Su"], 2:["Su", "Asc"], 12:["Su", "Mo", "Ve", "Sa (R)"]}, options);
+        astroChart.draw({1:["Su"], 2:["Su", "Asc"], 12:["Su", "Mo", "Ve", "Sa~R"]}, options);
        // astroChart2.draw(["Su", "Mo"], options);
 
         var svg = document.querySelector( "#chart" );
