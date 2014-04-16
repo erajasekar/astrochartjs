@@ -34,7 +34,7 @@
       log("--------")
       log(startPosition)
       log(housePosition)
-      drawHouse(svg, housePosition , houseSize, houseNo, data[houseNo])
+      drawHouse(svg, housePosition , houseSize, houseNo, data[houseNo], options)
 
 addStyleSheet = (elementId, options) =>
   svgElement = document.querySelector( elementId );
@@ -136,7 +136,7 @@ getItems = (data) ->
               ]
   items
 
-drawHouse = (svg, housePosition, houseSize, houseNumber, data) ->
+drawHouse = (svg, housePosition, houseSize, houseNumber, data, options) ->
   svg.rect(housePosition.x, housePosition.y, houseSize.width, houseSize.height).attr(class:'house');
   Dimension scaledSize = houseSize.scale(CONSTANTS.get('CELL_WIDTH_OFFSET_PERCENT'), CONSTANTS.get('CELL_HEIGHT_OFFSET_PERCENT'));
   Point cellPosition = housePosition.move( scaledSize.width, scaledSize.height);
@@ -147,7 +147,10 @@ drawHouse = (svg, housePosition, houseSize, houseNumber, data) ->
        styleClass = if /~R$/.test(item.text) then 'house retrograde' else 'house'
        svg.text(point.x, point.y, item.text).attr(class:styleClass, id : formatId(item.text));
   Point houseNumberLocation = computeHouseNumberLocation(housePosition, houseSize)
-  svg.text(houseNumberLocation.x, houseNumberLocation.y, houseNumber).attr(class :'houseNumber')
+
+  if options.showHouseNumbers
+    startHouseNumbersFrom = if options.startHouseNumbersFrom then options.startHouseNumbersFrom else 1;
+    svg.text(houseNumberLocation.x, houseNumberLocation.y, computeHouseNumber(houseNumber, startHouseNumbersFrom)).attr(class :'houseNumber')
   return;
 
 drawTitle = (svg, chartPosition, chartSize, title) ->
@@ -163,6 +166,9 @@ computeHouseNumberLocation = (housePosition, houseSize) ->
   Dimension scaledSize = houseSize.scale(CONSTANTS.get('HOUSE_NUMBER_WIDTH_OFFSET_PERCENT'), CONSTANTS.get('HOUSE_NUMBER_HEIGHT_OFFSET_PERCENT'));
   Point position = housePosition.move( scaledSize.width, scaledSize.height);
   return position
+
+computeHouseNumber = (houseNumber, startHouseNumbersFrom) ->
+  ((houseNumber - startHouseNumbersFrom) %% 12) + 1
 
 computeCellLocation = (cellPosition,houseSize,cell) ->
   cellWidth = houseSize.width / CONSTANTS.get('CELL_TOTAL_ROWS')

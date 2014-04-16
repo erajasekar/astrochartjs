@@ -1,29 +1,29 @@
 rect.house {
-    stroke: #FF7E00;
-    fill:   #F3EFE3;
+    stroke: #FFA500;
+    fill:   #FFFFFF;
 }
 
 rect.chart {
-    fill: #F3EFE3;
+    fill: #FFFFFF;
 }
 
 text.house {
-    font-family : Consolas;
+    font-family : "Courier New";
     font-weight: bold;
     font-size: 16px;
-    fill       : #4867D6;
+    fill       : #0000CC;
 }
 
 text.title {
-    font-family: Helvetica, Arial, san-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
     font-size  : 16px;
-    fill       : #248F40;
+    fill       : #C80082;
     text-anchor: middle;
 }
 
 text.retrograde {
-    fill:#04819E;
+    fill:#00468C;
 }
 
 text.houseNumber {
@@ -34,9 +34,9 @@ text.houseNumber {
 }
 
 #Asc {
-    fill:#FF1E00;
+    fill:red;
 }
 
 #Mo {
-    fill:#A61300
+    fill:#FF00FF
 }

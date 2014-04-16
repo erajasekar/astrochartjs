@@ -10,7 +10,8 @@
  */
 
 (function() {
-  var CONSTANTS, Cell, Dimension, Item, Point, addStyleSheet, computeCellLocation, computeHouseNumberLocation, computeHouseSize, computeTitleLocation, drawHouse, drawTitle, formatId, getCellForHouse, getItems, log;
+  var CONSTANTS, Cell, Dimension, Item, Point, addStyleSheet, computeCellLocation, computeHouseNumber, computeHouseNumberLocation, computeHouseSize, computeTitleLocation, drawHouse, drawTitle, formatId, getCellForHouse, getItems, log,
+    __modulo = function(a, b) { return (a % b + +b) % b; };
 
   this.AstroChart = function(elementId) {
     this.elementId = elementId;
@@ -38,7 +39,7 @@
             log("--------");
             log(startPosition);
             log(housePosition);
-            _results.push(drawHouse(svg, housePosition, houseSize, houseNo, data[houseNo]));
+            _results.push(drawHouse(svg, housePosition, houseSize, houseNo, data[houseNo], options));
           }
           return _results;
         };
@@ -124,8 +125,8 @@
     return items;
   };
 
-  drawHouse = function(svg, housePosition, houseSize, houseNumber, data) {
-    var cellPosition, houseNumberLocation, item, items, point, scaledSize, styleClass, _i, _len;
+  drawHouse = function(svg, housePosition, houseSize, houseNumber, data, options) {
+    var cellPosition, houseNumberLocation, item, items, point, scaledSize, startHouseNumbersFrom, styleClass, _i, _len;
     svg.rect(housePosition.x, housePosition.y, houseSize.width, houseSize.height).attr({
       "class": 'house'
     });
@@ -144,9 +145,12 @@
       }
     }
     Point(houseNumberLocation = computeHouseNumberLocation(housePosition, houseSize));
-    svg.text(houseNumberLocation.x, houseNumberLocation.y, houseNumber).attr({
-      "class": 'houseNumber'
-    });
+    if (options.showHouseNumbers) {
+      startHouseNumbersFrom = options.startHouseNumbersFrom ? options.startHouseNumbersFrom : 1;
+      svg.text(houseNumberLocation.x, houseNumberLocation.y, computeHouseNumber(houseNumber, startHouseNumbersFrom)).attr({
+        "class": 'houseNumber'
+      });
+    }
   };
 
   drawTitle = function(svg, chartPosition, chartSize, title) {
@@ -166,6 +170,10 @@
     Dimension(scaledSize = houseSize.scale(CONSTANTS.get('HOUSE_NUMBER_WIDTH_OFFSET_PERCENT'), CONSTANTS.get('HOUSE_NUMBER_HEIGHT_OFFSET_PERCENT')));
     Point(position = housePosition.move(scaledSize.width, scaledSize.height));
     return position;
+  };
+
+  computeHouseNumber = function(houseNumber, startHouseNumbersFrom) {
+    return (__modulo(houseNumber - startHouseNumbersFrom, 12)) + 1;
   };
 
   computeCellLocation = function(cellPosition, houseSize, cell) {
