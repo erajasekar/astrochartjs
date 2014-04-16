@@ -1,5 +1,10 @@
 ###
-Created by Rajasekar Elango on 4/3/14.
+/**
+* AstroChart is the top level class that provides api to draw hindu astrological charts
+*
+* @author Rajasekar Elango
+*
+/
 ###
 
 
@@ -29,7 +34,7 @@ Created by Rajasekar Elango on 4/3/14.
       log("--------")
       log(startPosition)
       log(housePosition)
-      drawHouse(svg, housePosition , houseSize, data[houseNo])
+      drawHouse(svg, housePosition , houseSize, houseNo, data[houseNo])
 
 addStyleSheet = (elementId, options) =>
   svgElement = document.querySelector( elementId );
@@ -131,9 +136,8 @@ getItems = (data) ->
               ]
   items
 
-drawHouse = (svg, housePosition, houseSize, data) ->
+drawHouse = (svg, housePosition, houseSize, houseNumber, data) ->
   svg.rect(housePosition.x, housePosition.y, houseSize.width, houseSize.height).attr(class:'house');
-
   Dimension scaledSize = houseSize.scale(CONSTANTS.get('CELL_WIDTH_OFFSET_PERCENT'), CONSTANTS.get('CELL_HEIGHT_OFFSET_PERCENT'));
   Point cellPosition = housePosition.move( scaledSize.width, scaledSize.height);
   items = getItems(data)
@@ -142,6 +146,8 @@ drawHouse = (svg, housePosition, houseSize, data) ->
        point = computeCellLocation(cellPosition, houseSize, item.cell)
        styleClass = if /~R$/.test(item.text) then 'house retrograde' else 'house'
        svg.text(point.x, point.y, item.text).attr(class:styleClass, id : formatId(item.text));
+  Point houseNumberLocation = computeHouseNumberLocation(housePosition, houseSize)
+  svg.text(houseNumberLocation.x, houseNumberLocation.y, houseNumber).attr(class :'houseNumber')
   return;
 
 drawTitle = (svg, chartPosition, chartSize, title) ->
@@ -153,6 +159,10 @@ drawTitle = (svg, chartPosition, chartSize, title) ->
           });
 
 
+computeHouseNumberLocation = (housePosition, houseSize) ->
+  Dimension scaledSize = houseSize.scale(CONSTANTS.get('HOUSE_NUMBER_WIDTH_OFFSET_PERCENT'), CONSTANTS.get('HOUSE_NUMBER_HEIGHT_OFFSET_PERCENT'));
+  Point position = housePosition.move( scaledSize.width, scaledSize.height);
+  return position
 
 computeCellLocation = (cellPosition,houseSize,cell) ->
   cellWidth = houseSize.width / CONSTANTS.get('CELL_TOTAL_ROWS')

@@ -26,6 +26,11 @@ text.retrograde {
     fill:#04819E;
 }
 
+text.houseNumber {
+    fill       : red;
+    text-anchor : middle;
+}
+
 #Asc {
     fill:#FF1E00;
 }
