@@ -8,7 +8,7 @@ Usage
 
 ###Html File
 
-* astrochartjs uses [snapsvg](http://snapsvg.io/) for rendering `svg` . So [download snapsvg](https://github.com/adobe-webplatform/Snap.svg/archive/v0.2.0.zip) and include in your html. Eg.
+* astrochartjs uses [snapsvg](http://snapsvg.io/) for rendering `svg` . So [download snapsvg](https://github.com/adobe-webplatform/Snap.svg/archive/v0.2.0.zip) and include `snap.svg.js` file from `dist` folder in your html. Eg.
 
 ```html
 <script src="../lib/snapsvg/snap.svg.js"></script>
@@ -53,4 +53,10 @@ astroChart.draw({
 }, options);
 ```
 
+**`draw()` method parameters**
+
+|Name|Type|Description
+|----|----|----------
+data |Object| Map of chart data with house number (1 to 12) as key and array planets in that house as value. In above example first house contains **"Su"** and **"Ke"**, second house contains **"Ju"** etc.. 
+options|Object| Map of key/value pair of options
 
