@@ -60,3 +60,4 @@ astroChart.draw({
 data |Object| Map of chart data with house number (1 to 12) as key and array of planets in that house as value. In above example first house contains **"Su"** and **"Ke"**, second house contains **"Ju"** etc.. 
 options|Object| Map of key/value pair of options
 
+
