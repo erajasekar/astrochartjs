@@ -61,7 +61,7 @@ data |Object| Map of chart data with house number (1 to 12) as key and array of 
 options|Object| Map of key/value pair of options
 
 
-** Supported options **
+**Supported `options`**
 
 |Name|Type  |Description
 |----|------|----------
