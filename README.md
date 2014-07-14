@@ -61,3 +61,14 @@ data |Object| Map of chart data with house number (1 to 12) as key and array of 
 options|Object| Map of key/value pair of options
 
 
+** Supported options **
+
+|Name|Type|Description
+|----|----|----------
+width|int|Width of the chart
+height|int|Height of the chart
+styleSheet|url string|Url of custom stylesheet to use
+showHouseNumbers|boolean|show house number on each house of the chart
+startHouseNumbersFrom|int(1-12)|starting house number when showHouseNumbers is true. Useful if you want to begin numbering from Ascendant.
+
+
