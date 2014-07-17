@@ -1,7 +1,7 @@
 astrochartjs
 ============
 
-Javascript library for drawing hindu astrological charts.
+Javascript library for drawing hindu astrological charts. You can look at demo of charts drawn using astrochartjs [at demo page](http://erajasekar.github.io/astrochartjs-demo/)
 
 Usage
 -----
